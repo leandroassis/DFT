@@ -77,7 +77,8 @@ Como a DFT (e consequentemente a STFT) de um sinal é uma representação discre
 [DFT usando numpy.fft.fft]
 [DFT usando numpy.fft.rfft]
 [DFT usando scipy.signal.stft]
-[Algoritmo DFT baseado na fórmula]
+[Algoritmo DFT 1-D baseado na fórmula]
+[Algoritmo DFT N-D baseado na fórmula]
 
 [Comparar saída das funções]
 
