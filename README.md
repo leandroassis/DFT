@@ -11,25 +11,28 @@ A fórmula geral para a DTFT de um sinal discreto x[n] é:
 
 $$ X(\Omega) = \sum_{n = -\infty}^{\infty} (x[n] \cdot e^{-j\Omega n})$$
 
-Em outras palavras, a Transformada de Fourier no Tempo Discreto é a transformação linear de um sinal discreto para sua projeção em uma base de exponenciais complexas.
+Em outras palavras, a Transformada de Fourier no Tempo Discreto é a transformação linear de um sinal discreto para sua projeção em uma base de exponenciais complexas.  Assim como a Transformada de Fourier em Tempo Contínuo é um caso particular da Transformada de Laplace quando a RDC não inclui o eixo imaginário, a DTFT é um caso particular da Transformada Z, quando a RDC inclui o círculo unitário.
 
 A análise de Fourier em tempo discreto pode ser dividida em três tipos:
 * Série Discreta de Fourier (DFS): É a DTFT de forma exclusiva para sinais periódicos. Nesse caso particular, o somatório ponderado de exponenciais complexas ocorre apenas para o número de amostras dentro de um período $N_{0}$ do sinal discreto x[n] (0 a $N_{0}-1$). A saída representa o módulo e desvio de fase para cada harmônico (múltiplo inteiro) da frequência $\omega$ do sinal de entrada.
   
-* Transformada de Fourier de Tempo Discreto (DTFT): É uma transformação contínua que mapeia um sinal discreto x[n] para um espectro contínuo na frequência X($\Omega$). Nesse caso, a DTFT é uma função contínua de frequência (definida para qualquer valor de $\Omega$), representando a amplitude e fase para cada frequência contínua do sinal de entrada. A DTFT é definida para sinais que se estendem de -$\infty$ a $\infty$ no tempo discreto.
+* Transformada de Fourier de Tempo Discreto (DTFT): É uma transformação contínua que mapeia um sinal discreto x[n] para um espectro contínuo e periódico na frequência X($\Omega$). Nesse caso, a DTFT é uma função contínua de frequência (definida para qualquer valor de $\Omega$), representando a amplitude e fase para cada frequência contínua do sinal de entrada. A DTFT é definida para sinais que se estendem de -$\infty$ a $\infty$ no tempo discreto.
 
-* Transformada de Fourier Discreta (DFT): Se trata de uma versão discretizada da DTFT. A DFT é aplicada a sequências discretas de comprimento finito (o somatório ocorre de 0 a $N - 1$, onde N é o número de amostras na sequência) e produz um espectro de frequência discreto e periódico. Para o cálculo da DFT é utilizado o algoritmo FFT (Fast Fourier Transform), alvo de análise deste trabalho. A DFT é a transformada utilizada para a determinação de espectros de frequência de forma computacional, uma vez que estes não conseguem lidar com um número infinito de valores. Note que se o número de amostras for suficientemente grande, pode-se aproximar com a precisão necessária a DTFT com a DFT.
+* Transformada de Fourier Discreta (DFT): Se trata de uma versão discretizada da DTFT. A DFT é aplicada a sequências discretas de comprimento finito (o somatório ocorre de 0 a $N - 1$, onde N é o número de amostras na sequência) e produz um espectro de frequência discreto. Para o cálculo da DFT é utilizado o algoritmo FFT (Fast Fourier Transform), alvo de análise deste trabalho. A DFT é a transformada utilizada para a determinação de espectros de frequência de forma computacional, uma vez que computadores não conseguem lidar com um número infinito de valores. Note que se o número de amostras for suficientemente grande, pode-se aproximar com a precisão necessária a DTFT com a DFT.
 
-A DFT possui as seguintes propriedades:
-1. Linearidade;
-    [Adicionar demonstração linearidade]
-2. Simetria conjugada complexa para sinais reais;
-   [Adicionar demonstração simetria conjugada complexa]
-3. Deslocamento no tempo;
-   [Adicionar demonstração deslocamento no tempo]
-4. Convolução no tempo;
-   [Adicionar demonstração convolução no tempo]
+Algumas das propriedades da DFT:
+1. Linearidade: A DFT de combinações lineares de sinais equivale a combinações lineares das DFTs dos sinais.
+    ![Linearidade da DFT](./linearidade.png)
+2. Simetria conjugada complexa para sinais reais: Se o sinal for puramente real, as frequências negativas são complexos conjugados das frequências positivas.
+    ![Simetria conjugada](./simetria.png)
+3. Deslocamento no tempo: Se um sinal x[n] possui transformada X[k], então deslocar o sinal pode ser expresso como:
 
+$$DFT(x[n-m]) = \sum_{n = 0}^{N-1}(x[n-m]\cdot e^{-j2\pi \frac{kn}{N}}\cdot e^{-j2\pi\frac{km}{N}})$$
+
+Ou seja:
+$$DFT(x[n-m]) = e^{-j2\pi\frac{km}{N}}\cdot\sum_{n = 0}^{N-1}(x[n-m]\cdot e^{(-j2\pi \frac{kn}{N})})$$
+
+As demais propriedades como reversão no tempo, deslocamento na frequência, convoluçãp no tempo e na frequência não serão provadas neste trabalho, mas podem ser encontradas em [1].
 #### 2. A DFT no Python
 
 Dentre as implementações da DFT disponíveis na biblioteca scipy, destacam-se as funções fft e stft, que implementam a DFT e a STFT (Short-Time Fourier Transform), respectivamente.
@@ -52,7 +55,7 @@ Dentre as implementações da DFT disponíveis na biblioteca scipy, destacam-se 
 
     Em particular, a função fft do scipy.fft, bem como o algoritmo FFT, são extremamente aprimorados para tamanhos de dados múltiplos de 2.
 
-    A biblioteca scipy.fft possui outras funções para a determinação da DFT para dados de N dimensões usando o FFT e para caso de sinais puramente reais na entrada. Para sinais puramente reais, o algoritmo FFT não sofre alterações, apenas não são computados os valores de frequência negativa, uma vez que estes são simétricos aos valores de frequência positiva. Já para as funções de N dimensões, o algoritmo FFT é aplicado para cada dimensão do sinal de entrada conforme a seguinte fórmula ilustra para 2 dimensões.
+    A biblioteca scipy.fft possui outras funções para a determinação da DFT para dados de N dimensões usando o FFT e para caso de sinais puramente reais na entrada. Para sinais puramente reais, o algoritmo FFT não sofre alterações, apenas não são computados os valores de frequência negativa, uma vez que estes são simétricos aos valores de frequência positiva (propriedade de simetria conjugada). Já para as funções de N dimensões, o algoritmo FFT é aplicado para cada dimensão do sinal de entrada conforme a seguinte fórmula ilustra para 2 dimensões.
 
     $$X(k, l) = \sum_{i = 0}^{N_{i}-1}\sum_{j = 0}^{N_{j}-1}x[i, j]e^{-j2\pi(\frac{ki}{N_{i}}+\frac{lj}{N_{j}})}$$ 
 
