@@ -29,7 +29,6 @@ Algumas das propriedades da DFT:
 2. Simetria conjugada complexa para sinais reais: Se o sinal for puramente real, as frequências negativas são complexos conjugados das frequências positivas.
     ![Simetria conjugada](./simetria.png)
     Na figura, pode-se ver que a DFT de um sinal real possui simetria conjugada complexa. O índice k = 0 é o valor 150-0j, os valores a direita são os índices 1 e 2, e a esquerda os índices -1 e -2, que são os complexos conjugados dos índices 1 e 2, respectivamente.
-3. Deslocamento no tempo: Se um sinal x[n] possui transformada X[k], então deslocar o sinal pode ser expresso como:
 
 $$DFT(x[n-m]) = \sum_{n = 0}^{N-1}(x[n-m]\cdot e^{-j2\pi \frac{kn}{N}}\cdot e^{-j2\pi\frac{km}{N}})$$
 
@@ -45,7 +44,6 @@ Dentre as implementações da DFT disponíveis na biblioteca scipy, destacam-se 
 
 * scipy.fft.fft: Calcula a DFT de um sinal discreto. A função fft retorna o espectro de frequência discreto e periódico de um sinal discreto. A função fft é uma implementação do algoritmo FFT (Fast Fourier Transform), que é um algoritmo eficiente para o cálculo da DFT. O algoritmo FFT é uma versão otimizada da DFT, que explora a simetria do sinal de entrada para reduzir o número de operações necessárias para o cálculo da DFT. A DFT possui complexidade O(N^2), enquanto o algoritmo FFT possui complexidade O(NlogN).
 
-    O algoritmo FFT é baseado na propriedade de que a DFT de um sinal de tamanho N pode ser calculada a partir da DFT de dois sinais de tamanho N/2. A propriedade é ilustrada pela seguinte fórmula:
 
     $$X(k) = \sum_{n = 0}^{N-1}x[n]e^{-j2\pi\frac{kn}{N}} = \sum_{n = 0}^{N/2-1}x[2n]e^{-j2\pi\frac{k(2n)}{N}} + \sum_{n = 0}^{N/2-1}x[2n+1]e^{-j2\pi\frac{k(2n+1)}{N}}$$
 
@@ -77,7 +75,8 @@ Dentre as implementações da DFT disponíveis na biblioteca scipy, destacam-se 
 Ambas as funções fft e stft possuem suas inversas que apenas utilizam a equação inversa de Fourier para a reconstrução do sinal de entrada.
 
 $$x[n] = \frac{1}{N}\sum_{k = 0}^{N - 1} X(\Omega) \cdot e^{+j\Omega_{k} n}$$
-Como a DFT (e consequentemente a STFT) de um sinal é uma representação discretizada da resposta em frequência do sinal x[n], então $\Omega_{k} = \frac{2\pi k}{N}$. Onde k são os índices de frequência (harmônicos) e N é o número de amostras do espectro X[$\Omega$]. Para a reconstrução do sinal a partir da STFT, 
+Como a DFT (e consequentemente a STFT) de um sinal é uma representação discretizada da resposta em frequência do sinal x[n], então $\Omega_{k} = \frac{2\pi k}{N}$. Onde k são os índices de frequência (harmônicos) e N é o número de amostras do espectro X[$\Omega$]. 
+Para a reconstrução do sinal a partir da STFT, a fórmula é a mesma, basta que seja feita a soma das contribuições de cada janela deslizante. 
 
 #### 4. Bibliografia
 1. Sinais e Sistemas Lineares, 2ª Edição, B. P. Lathi, LTC, 2007.
